@@ -12,7 +12,7 @@
   import { mapGetters } from 'vuex';
 
   export default {
-    name: 'ConversationAreaInput',
+    name: 'ConversationArea',
     components: { ConversationAreaMessage },
     computed: {
       ...mapGetters([
@@ -29,5 +29,7 @@
     max-height: 400px;
     height: 100%;
     overflow-y: auto;
+    margin: -16px 0;
+    padding: 8px;
   }
 </style>
