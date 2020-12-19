@@ -1,12 +1,15 @@
 <template>
   <div id="app">
-    <router-view />
+    <notifications position="top left"/>
+    <conversation-area/>
   </div>
 </template>
 <script>
 
+  import ConversationArea from './components/ConversationArea';
   export default {
     name: 'app',
+    components: { ConversationArea },
     mounted() {
       this.$store.dispatch('getConversation');
       this.$store.dispatch('getCurrentUser');
@@ -14,7 +17,7 @@
   }
 </script>
 
-<style lang="scss">
+<style>
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -23,16 +26,29 @@
     color: #2c3e50;
   }
 
-  #nav {
-    padding: 30px;
+  .vue-notification {
+    padding: 10px;
+    margin: 0 5px 5px;
 
-    a {
-      font-weight: bold;
-      color: #2c3e50;
+    font-size: 12px;
 
-      &.router-link-exact-active {
-        color: #42b983;
-      }
+    color: #ffffff;
+    background: #44A4FC;
+    border-left: 5px solid #187FE7;
+
+    &.warn {
+      background: #ffb648;
+      border-left-color: #f48a06;
+    }
+
+    &.error {
+      background: #E54D42;
+      border-left-color: #B82E24;
+    }
+
+    &.success {
+      background: #68CD86;
+      border-left-color: #42A85F;
     }
   }
 </style>

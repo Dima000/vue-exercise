@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { conversation, currentUser, } from '../API/data';
+import { conversation, currentUser, } from './data';
 
 Vue.use(Vuex)
 
@@ -37,12 +37,19 @@ export default new Vuex.Store({
       commit(types.SET_CURRENT_USER, data);
     },
     async sendMessage({ commit, getters }, message) {
-      let oldConversation = getters.conversation;
+      let oldConversation = [...getters.conversation];
       commit(types.SEND_MESSAGE, message);
 
       try {
-        await mockLoad(JSON.stringify(message), 500);
+        let successRate = getRandomInt(100);
+        await mockLoad(JSON.stringify(message), 500, successRate);
       } catch (e) {
+        Vue.notify({
+          title: 'Send error',
+          type: 'error',
+          text: 'Some error happened. Your message was not sent!'
+        });
+
         commit(types.SET_CONVERSATION, oldConversation);
       }
     }
@@ -53,15 +60,23 @@ export default new Vuex.Store({
   }
 })
 
-function mockLoad(data, timeout = 0) {
+function mockLoad(data, timeout = 0, successRate = 100) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       try {
         const messages = JSON.parse(data);
-        resolve(messages);
+        if (successRate > 10) {
+          resolve(messages);
+        } else {
+          reject([]);
+        }
       } catch (e) {
         reject([]);
       }
     }, timeout);
   });
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
 }
