@@ -5,8 +5,9 @@ import { conversation, currentUser, } from '../API/data';
 Vue.use(Vuex)
 
 const types = {
-  GET_CONVERSATION: 'getConversation',
-  GET_CURRENT_USER: 'getCurrentUser',
+  SET_CONVERSATION: 'setConversation',
+  SET_CURRENT_USER: 'setCurrentUser',
+  SEND_MESSAGE: 'sendMessage',
 }
 
 export default new Vuex.Store({
@@ -16,21 +17,34 @@ export default new Vuex.Store({
     allUsers: []
   },
   mutations: {
-    [types.GET_CONVERSATION]: (state, data) => {
+    [types.SET_CONVERSATION]: (state, data) => {
       state.conversation = data;
     },
-    [types.GET_CURRENT_USER]: (state, data) => {
+    [types.SET_CURRENT_USER]: (state, data) => {
       state.currentUser = data;
+    },
+    [types.SEND_MESSAGE]: (state, data) => {
+      state.conversation.push(data);
     },
   },
   actions: {
-    async getConversation({commit}) {
+    async getConversation({ commit }) {
       let data = await mockLoad(conversation);
-      commit(types.GET_CONVERSATION, data);
+      commit(types.SET_CONVERSATION, data);
     },
-    async getCurrentUser({commit}) {
+    async getCurrentUser({ commit }) {
       let data = await mockLoad(currentUser);
-      commit(types.GET_CURRENT_USER, data);
+      commit(types.SET_CURRENT_USER, data);
+    },
+    async sendMessage({ commit, getters }, message) {
+      let oldConversation = getters.conversation;
+      commit(types.SEND_MESSAGE, message);
+
+      try {
+        await mockLoad(JSON.stringify(message), 500);
+      } catch (e) {
+        commit(types.SET_CONVERSATION, oldConversation);
+      }
     }
   },
   getters: {

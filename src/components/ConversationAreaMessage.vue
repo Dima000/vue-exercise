@@ -2,7 +2,7 @@
   <div class="conversation-area__message" :class="{'right-side': isOwnMessage}">
     <img :src="message.from.thumbnail"
          :alt="message.from.name"
-         :title="message.from.thumbnail"
+         :title="tooltipText"
          class="message-image">
     <div class="message-text" v-html="message.message">
     </div>
@@ -21,6 +21,10 @@
       ...mapGetters(['currentUser']),
       isOwnMessage() {
         return this.message.from.id === this.currentUser.id;
+      },
+      tooltipText() {
+        let { firstName, lastName } = this.message.from;
+        return `${firstName || ''} ${lastName || ''}`.trim();
       }
     }
   }
@@ -30,7 +34,7 @@
   .conversation-area__message {
     display: flex;
     align-items: flex-end;
-    margin: 16px 0;
+    margin: 12px 0;
   }
 
   .message-image {
@@ -62,7 +66,7 @@
   .conversation-area__message.right-side .message-text {
     order: 1;
     background-color: lightblue;
-    margin: 0 12px 0 0 ;
+    margin: 0 12px 0 0;
   }
 
 </style>

@@ -7,7 +7,7 @@ const bob = {
 
 const jack = {
   id: 48,
-  fistName: 'Jack',
+  firstName: 'Jack',
   lastName: 'Dowager',
   thumbnail: 'https://images.generated.photos/g232OgTeDpORCR483-Ko3acnrLoePZIbyMDabR64x2U/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA3MDgyODAuanBn.jpg',
 };
